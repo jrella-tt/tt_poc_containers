@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" scan="true" scanPeriod="15 seconds">
+
+  <!--
+  To override e.g., the value of QSERVER_LOGFILE_DIR, create the following file in the same directory
+  as the logback file, and define those properties as desired.
+
+  For example, add a line like this to the properties file (you must add a
+  trailing slash to this path):
+
+  QSERVER_LOGFILE_DIR=/var/log/qserver/
+  -->
+  <property resource="logback-test.properties" />
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %highlight(%-5level) %cyan(%33logger{33}) %magenta(%X{akkaSource}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!-- daily rollover -->
+        <fileNamePattern>${QSERVER_LOGFILE_DIR:-./}queue-server.%d{yyyy-MM-dd}.log</fileNamePattern>
+        <!-- keep 10 days' worth of history -->
+        <maxHistory>10</maxHistory>
+      </rollingPolicy>
+      <encoder>
+        <pattern>%X{akkaTimestamp} %-5level %logger{36} %X{sourceThread} %X{akkaSource} - %msg%n</pattern>
+      </encoder>
+    </appender>
+
+    <logger name="com.timetrade.queueservice" level="INFO" />
+
+    <logger name="spray" level="WARN" />
+    <logger name="akka" level="INFO" />
+
+    <logger name="scala.slick" level="ERROR" />
+    <logger name="com.mchange.v2.c3p0" level="ERROR" />
+    <logger name="com.timetrade.queueservice.server.core.LoadRebalancingSingletonActor" level="INFO" />
+    <logger name="com.timetrade.queueservice.server.core.RootActor" level="INFO" />
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

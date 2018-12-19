@@ -1,0 +1,16 @@
+sql_server:
+  image: microsoft/mssql-server-linux:2017-latest
+  environment:
+    ACCEPT_EULA: Y
+    SA_PASSWORD: timeTrade22!
+
+  ports:
+    - "1433:1433"
+
+postgres:
+  image: postgres:10
+  environment:
+    POSTGRES_PASSWORD: timeTrade22!
+
+  ports:
+  - "5432:5432"
